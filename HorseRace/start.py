@@ -1,4 +1,4 @@
-﻿from services.log import logger
+﻿from loguru import logger
 from nonebot import get_driver
 import json
 import os

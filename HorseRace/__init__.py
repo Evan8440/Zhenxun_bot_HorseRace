@@ -8,7 +8,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageEvent, Message, MessageSegment
 from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg
-from services.log import logger
+from loguru import logger
 from .start import *
 from .race_group import race_group
 from .setting import  *

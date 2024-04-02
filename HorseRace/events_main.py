@@ -1,7 +1,7 @@
 ﻿import random
 from .horse import horse
 from .setting import  *
-from services.log import logger
+from loguru import logger
 
 def event_main(race, horse_i, event, event_delay_key = 0):
     try:
