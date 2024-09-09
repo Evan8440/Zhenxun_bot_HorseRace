@@ -1,0 +1,131 @@
+[["事件包名称", "作者", 1],
+{"id":[1,"事件名称"], "sub":["horse", -1], "targets":["self"],
+"describe":["", "", ""],
+"events":[]
+},
+{"id":[2,"事件名称"],, "sub":["horse", -1], "targets":["other"],
+"describe":["", "", ""],
+"events":[]
+},
+{"id":[4,"事件名称"],, "sub":["horse", -1], "targets":["other_one"],
+"describe":["", "", ""],
+"events":[]
+},
+{"id":[6,"事件名称"],, "sub":["horse", -1], "targets":["other_end"],
+"describe":["", "", ""],
+"events":[]
+},
+]
+"""
+主体结构如上
+==========以下为事件包全部详细参数表：==========
+==========必填项目：首项，作为事件包的定义项目，样例：==========
+["事件包名称", "作者", 1], 
+                            "事件包名称", str: 包编号/程序用/ 不能与其他包重复，建议等同于文件名
+                            [事件包名称+包内编号]为事件唯一特征码，事件包名称请勿与其他无关事件包重复，谨慎填写
+                            "作者", str: 作者罢了
+                            1, int: 版次罢了
+
+                            
+==========必填项目样例：==========
+"id":[num, "事件名称"],
+                            num, int: 包内编号/程序用/禁止重复，建议用自然数，
+                            [事件包名称+包内编号]为事件唯一特征码，谨慎填写
+                            "事件名称", str: 事件名称/方便debug用/建议不重复即可，如日常事件包可命名为：日常1，日常2，日常3，
+                            事件名称涉及debug项目，谨慎填写
+
+"rare": [0],
+                            若未填写此项，视为"rare": [0]
+                            0, 可选值0/1/-1，填0为普通事件，填1为降低触发率的高稀有度事件，-1为不会主动随机触发的子事件
+"sub":["horse", -1],
+                            若未填写此项，视为"sub":["horse", -1],
+                            第一项 str: 事件主体, 可选值：
+                                "horse": 以马为主体的事件
+                                "environment": 环境事件/第三方主体事件
+                                "xxxx": 特殊事件组
+                            -1: 事件唯一性值，事件在单次赛马中被允许的执行次数，-1为无限次
+                                注："environment"词条下，无法使用带self的"target"参数
+                            
+"targets":["target", [1, "buff_1"], [1, "buff_2"]], 
+                            第一项str: 事件目标/程序用/可选值:
+                                "self": 目标为自己
+                                "other_one": 目标为其他一匹马
+                                "all": 目标为全部马
+                                "other_all": 目标为全部其他马
+                                "self_other_one": 目标为自己和其他一匹马
+                                "other_two": 目标为其他随机两匹马
+                                "neighbour": 目标为相邻两匹马
+                                "self_neighbour": 目标为自己和相邻两匹马
+                                "other_head"： 目标为最前的马(发起者自己除外）
+                                "other_end"： 目标为最后的马(发起者自己除外）
+                                "with_buff_one": 目标为满足buff_with的一匹马，必需配合buff_with配置使用
+                                "with_buff_all": 目标为满足buff_without的所有马，必需配合buff_with配置使用
+                                "without_buff_one": 目标为满足buff_with的一匹马，必需配合buff_with配置使用
+                                "without_buff_all": 目标为满足buff_without的所有马，必需配合buff_without配置使用
+                            第二项[int, str, str...]: 在target基础上，至少拥有int个其中buff_tag的单位才能成为目标，若无则留空
+                            第三项[int, str, str...]: 在target基础上，至少不拥有int个其中buff_tag的单位才能成为目标，若无则留空
+                                但有第三项时，第二项不能留空，应写作[0]
+==========事件文字输出项，（单个留空可填写f""，都留空就不要这项了）==========
+"describe":["describe_op","describe_ed","describe_error"],
+                            事件文字输出/事件用/可留空字符串:（不要太长，不要太长，不要太长，没事就留空得了）
+                            <0>代指当前事件发起者，<t>代指事件目标
+                            "describe_op", str: 事件触发文字输出
+                            "describe_ed", str: 事件结束文字输出
+                            "describe_error", str: 事件未能正常执行输出
+==========以下为"events"可选项，单项内不分主次，可按需重复，按需排放顺序==========
+填写格式为"events":[{事件: 参数}, {事件: 参数}, {事件: 参数}...]
+    关于buff，写在前头
+        buff：buff有tag, name, time 三个参数，tag为判定项，name为显示项，time为时间
+        对于任意tag可自定义name
+        例如tag为"die",name名为<石化>，此时虽然这个buff不显示为死亡但依旧作为死亡执行后续代码
+        buff获取即生效，回合结算完成时，所有在场的buff的时间-1，时间结束的移除
+    以下为特殊buff的tag:（特殊tag有对应事件event，以event格式只能指定时间）
+        "hiding", 推荐name：隐身/buff_tag/有该buff_tag, 没人知道你在哪
+        "locate_lock", 推荐name：驻足/buff_tag/有该buff_tag, 进行正常移动时会直接跳过
+        "vertigo", 推荐name：眩晕/buff_tag/有该buff_tag, 无法进行主动移动，且不作为事件的执行者
+        "die", 推荐name：死亡/buff_tag/有该buff_tag, 无法进行任何移动，且不作为事件的执行者，设定时间归0后自己复活（好怪捏）
+        "away", 推荐name：离开/buff_tag/有该buff_tag, 离场，今天就再也没你事了
+    对于任意tag可自定义name，但必须使用事件"add_buff"进行自定义
+        自定义name不影响事件按tag进行执行，name仅对外显示
+        例如tag为"die",name名为<石化>，此时虽然这个buff不显示为死亡但依旧作为死亡执行后续代码
+    buff获取即生效，回合结算完成时，所有在场的buff的时间-1，时间结束的移除
+        
+    =========以下为事件========
+    "hiding"/单次buff事件/赋予int回合的"hiding"隐身buff
+    "locate_lock"/单次buff事件/赋予int回合的"locate_lock"驻足buff
+    "vertigo"/单次buff事件/赋予int回合的"vertigo"眩晕buff
+    "die": int/单次buff事件/赋予int回合的"die"死亡buff，长期死亡请设置int=9999
+    "away": int/单次buff事件/int无意义/赋予"away"buff/反正是跑了，从场内移除，回不来的
+    "live": int/单次事件/int无意义/复活，可以解除buff_tag: "die"
+    "move": int/单次事件/立即进行相当于int值的位移（可负数）
+    "to_location": int/单次事件/让目标移动到距离起点int的位置
+    "to_random_location": int/int无意义/单次事件/让目标移动到随机位置
+    "buff_time_add": [int, str, str...]/单次事件/str为buff"tag"项，数量0-N，数量0时为指定全部buff/让目标指定buff增加/减少回合数
+    "del_buff": [str, str...] /单次事件/str为buff"tag"项，数量0-N，数量0时为指定全部buff/让目标移除指定buff
+    "exchange_track": int/单次事件/int无意义/与目标换赛道 （事件限定多目标，超过两个随机打乱）
+    "exchange_location": int/单次事件/int无意义/与目标换进度位置
+    "move_add":[int, int]/持续事件/从左往右分别为回合数，每回合位移加值（可以负的）
+    "random_move_add":[int, int, int]/持续事件/从左往右分别为持续回合数，每回合位移加值最低随机值，最高随机值（可以负的）
+    "rate_add":[int, int, int, int, int]/持续事件/从左往右分别为持续回合数，rate_0-4的权数加值
+    "rate_mult":[int, int, int, int, int]/持续事件/从左往右分别为持续回合数，rate_0-4的权数乘值
+        rate_0-4权数影响该回合抽到驻足/+1/+2/+3的概率，最小值为0
+    "add_buff": ["tag","name",3]，[str, str, int, str, str, int...] /buff事件/让目标增加buff_tag，
+        str str int一组，分别为tag,name,time
+    "anti_buff":[int, str, int, str]/持续事件/从左往右分别为持续回合数，可抵消的buff"tag"，期间可抵消的总次数，抵消时的文字输出<1>表示抵抗buff者
+    "event_now":[int, int]/单次事件/本回合开始执行子事件/前者可执行回合数，后者子事件编号
+    "event_delay":[int, int]/单次事件/下回合开始执行子事件/前者可执行回合数，后者子事件编号
+    "random_event_now"：[[int, int, int], [int, int, int]...]/单次事件/本回合开始执行子事件/每3个int一组，前者可执行回合数，中间子事件编号，后者触发权数(正数）
+    "random_event_delay"：[[int, int, int], [int, int, int]...]/单次事件/下回合开始执行子事件/每3个int一组，前者可执行回合数，中间子事件编号，后者触发权数(正数）
+        每一个目标都会成为事件的发起者，建议子事件悠着点写，尤其是"describe"，很吵的
+        "event_now"和"random_event_now"如果设置时间为1则等价为同步执行事件
+        延迟多回合的事件：可设置一个其他全空的子事件作为过度
+    "add_horse": [str, str, str, str, int]/单次事件/乱入一匹马，跑道随机，location进度取存活马的均值/
+        从左到右分别为：持有者，马名字，马称号，特殊事件组， 触发特殊事件组概率(单位：千分之x），事件组为下回合开始判定触发
+        例如"events":[{"add_horse": ["撒旦", "死亡骑士", "天灾", "disaster", 450]}]（特殊事件切记设置事件唯一性值）
+        可以执行如下事件：撒旦召唤『天灾』死亡骑士乱入了赛马场，携带9999回合的"disaster"buff，并且每回合千分之450的概率执行"disaster"事件组的事件判定
+        "特殊事件组"作为特殊buff存在，事件期间不会受到消除，方便事件指定目标，防止特殊事件组的无差别攻击的防误伤
+        （至于死亡骑士被其他马的事件干掉了，哎，有什么关系吗？）
+        特殊马死亡时事件组结束。
+
+    抓群友扔下赛马场事件，以道具指令的形式注入，不计入事件表
+"""

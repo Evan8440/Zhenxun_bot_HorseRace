@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f0762881-f7a9-4b84-80c1-08e98f814b8d" name="更改" comment="Update __init__.py">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/zhenxun_bot_HorseRace.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/event.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/events/测试包.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/horserace.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/horseracedb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HorseRace/v3.0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/v3.0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HorseRace/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/“日常，真的很日常”.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/克苏鲁.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/基础事件.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/复刻经典事件集合v1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/崩坏集合v1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/群友日常.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/芜湖事件合集.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/赫尔事件集v1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events/赫尔的赛马场事件簿.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/events_main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/horse.py" beforeDir="false" afterPath="$PROJECT_DIR$/HorseRace/horse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/race_group.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/setting.py" beforeDir="false" afterPath="$PROJECT_DIR$/HorseRace/setting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HorseRace/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/HorseRace/start.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Evan8440 &lt;108109327+evan8440@users.noreply.github.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Evan8440&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Evan8440/zhenxun_bot_HorseRace.git&quot;,
+    &quot;accountId&quot;: &quot;2ace686c-e13a-4925-b80e-d42d13e002fa&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2lq9CxUqS2RI8PAF1PzvjFwkXIE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev",
+    "ignore.virus.scanning.warn.message": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="f0762881-f7a9-4b84-80c1-08e98f814b8d" name="更改" comment="" />
+      <created>1725896615680</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725896615680</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="更新" />
+    <MESSAGE value="Update __init__.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update __init__.py" />
+  </component>
+</project>
