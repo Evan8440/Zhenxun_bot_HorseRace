@@ -16,12 +16,9 @@ go—cqhttp的疯狂风控把赛马2.0打的体无完肤以至于一度放弃计
 
 ### 真寻bot的插件安装方式
 
-1、将HorseRace放于真寻的/zhenxun/plugins/
-
-2、或者自行更改bot.py
-
-3、或者使用真寻的插件商店（未实装）
-
+    1、将HorseRace放于真寻的/zhenxun/plugins/
+    2、或者自行更改bot.py
+    3、或者使用真寻的插件商店（未实装）
 
 ### 使用方式
 
