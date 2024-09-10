@@ -35,18 +35,23 @@ class eventdb(Model):
     """事件包名称"""
     uid = fields.IntField(default=0, description="事件包内编号")
     """事件包内编号"""
-    rare = fields.IntField(default=0, description="事件触发稀有度")
-    """事件触发稀有度"""
     name = fields.CharField(255, null=True, description="事件名")
     """事件名"""
-    sub = fields.CharField(255, null=True, description="事件主体")
-    """事件主体"""
+    targets: Dict[str, int] = fields.JSONField(default={}, description="事件目标")
+    """事件目标"""
+    describe = fields.CharField(255, null=True, description="事件文字")
+    """事件文字"""
+    data: Dict[str, int] = fields.JSONField(default={}, description="事件内容")
+    """事件内容"""
+    rare = fields.IntField(default=0, description="事件触发稀有度")
+    """事件触发稀有度"""
     uniqueness = fields.IntField(default=0, description="事件唯一型值")
     """事件唯一型值"""
-    targets: Dict[str, int] = fields.JSONField(default={}, description="事件目标")
-    """事件Dict-target"""
-    data: Dict[str, int] = fields.JSONField(default={}, description="事件内容")
-    """事件Dict-data"""
+    sub = fields.CharField(255, null=True, description="事件主体")
+    """事件主体"""
+
+
+
 
     class Meta:
         table = "horse_race_event"

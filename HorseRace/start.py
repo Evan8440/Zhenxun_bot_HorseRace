@@ -107,31 +107,38 @@ async def deal_events(events) -> str:
             uid = event["id"]
             try:
                 try:
+                    describe = event["describe"]
+                except:
+                    describe = ["", "", ""]
+                try:
                     rare = event["rare"]
                 except:
-                    rare = [0]
+                    rare = 0
+                try:
+                    uniqueness = event["uniqueness"]
+                except:
+                    uniqueness = -1
                 try:
                     sub = event["sub"]
                 except:
-                    sub = ["horse", -1]
-                sub = event["sub"]
+                    sub = "horse"
                 targets = event["targets"]
                 data = event["events"]
-                if await eventdb.exists(group=group, uid=uid[0], name=uid[1],
-                                        sub=sub[0], uniqueness=sub[1], targets=targets, data=data):
+                if await eventdb.exists(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                                        data=data, rare=rare, uniqueness=uniqueness, sub=sub):
                     # logs += f"id：{str(uid)}已存在，跳过\n"
                     pass
                 elif await eventdb.exists(group=group, uid=uid[0]):
                     # logs += f"id：{str(uid)}已存在，检测非重复，开始覆盖\n"
                     await eventdb.filter(group=group, uid=uid[0]).delete()
-                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1],
-                                                sub=sub[0], uniqueness=sub[1], targets=targets, data=data)
+                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                                                data=data, rare=rare, uniqueness=uniqueness, sub=sub)
                     logs += f"Warning: id：{str(uid)}的事件加载时更新并覆盖数据，若重复此报错则为包内id重复\n"
                 else:
-                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1],
-                                                sub=sub[0], uniqueness=sub[1], targets=targets, data=data)
+                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                                                data=data, rare=rare, uniqueness=uniqueness, sub=sub)
             except:
-                logs += f"Warning: 事件uid:{str(uid[0])}，事件名{uid[1]}\n"
+                logs += f"Warning: 事件uid:{str(uid[0])}，事件名{str(uid[1])}\n"
         except:
             logs += f"Warning: 第 {str(i)} 个事件，事件uid或事件名异常\n"
 

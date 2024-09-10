@@ -1,14 +1,22 @@
 [["测试包", "冥乐", 1],
-{"id":[1, "平地摔"],"rare": [0], "sub":["horse", -1], "targets":["self"],
+{"id":[1, "平地摔"],
+"targets":["self"],
 "describe":["<0>平地摔而死", "", ""],
 "events":[{"die":  999}]
 },
-{"id":[2, "随机传送"],"rare": [0], "sub":["horse", -1], "targets":["other"],
+{"id":[2, "随机传送"],
+"targets":["other"],
 "describe":["<0>踩到了随机传送陷阱，被传送了", "", ""],
 "events":[{"to_random_location": 1}]
 },
-{"id":[3, "事件名称"],"rare": [0], "sub":["horse", -1], "targets":["all"],
+{"id":[3, "事件名称"],
+"targets":["all"],
 "describe":["所有人获得了回合的移动力加成", "", ""],
+"events":[{"random_move_add":[3, 0, 3]}]
+},
+{"id":[7, "环境事件"],"sub": "environment",
+"targets":["all"],
+"describe":["环境移动力加成", "", ""],
 "events":[{"random_move_add":[3, 0, 3]}]
 }
 ]
