@@ -6,105 +6,52 @@ from .horserace import RaceGroup
 from .horse import RaceHorse
 from .event import RaceEvent
 from .setting import *
-
-from nonebot_plugin_htmlrender import (
-    text_to_pic,
-)
+from zhenxun.services.log import logger
+from nonebot_plugin_htmlrender import text_to_pic
 
 
+#============前置函数
 def is_chinese(char):
+    """
+    :param char: str，单个字符
+    :return: bool，是否中文
+    """
     return bool(re.match('[\u4e00-\u9fff]', char))
 
 
-async def get_horse(user_id: str)-> Horsedb:
+async def have_horse(user_id: str)-> bool:
     """
-    获取数据库内马的信息，若无则无返回
+    :param user_id: str，qq号
+    :return: bool，是否有马
     """
     if await Horsedb.exists(user_id=user_id):
+        return True
+    else:
+        return False
+
+async def get_horse(user_id: str)-> Horsedb:
+    """
+    :param user_id: str，qq号
+    :return: Horsedb，horse
+    """
+    if await have_horse(user_id):
         horse, _ = await Horsedb.get_or_create(user_id=user_id)
         return horse
 
-
-async def new_horse(user_id: str, name: str, nickname: str) -> str:
-    """
-    新用户获取一匹马
-    """
-    if await Horsedb.exists(user_id=user_id):
-        result = f"你已经有一匹马了\n请使用指令“我的赛马”查看详细"
-    elif name == "":
-        result = f"马的名字在哪里呢\n请使用指令：\n获取赛马 [名字] [称号]\n称号必须为2个中文字符"
-    elif nickname == "":
-        result = f"马的昵称又在哪里呢\n请使用指令：\n获取赛马 [名字] [称号]\n称号必须为2个中文字符"
-    elif len(name) > name_max_len:
-        result = f"马的名字太长了啦，最大长度是{str(name_max_len)}个中文/英文字符哒"
-    elif len(nickname) != nickname_max_len or not is_chinese(nickname[:1]) or not is_chinese(nickname[1:]):
-        result = f"马的昵称必须是{str(nickname_max_len)}个中文字符哒"
-    else:
-        horse, _ = await Horsedb.get_or_create(
-            user_id=user_id, horse_name=name, horse_nickname=(f"『{nickname}』"))
-        result = f"获取赛马娘成功\n{horse.horse_nickname}{horse.horse_name} 已经成为你的伙伴啦"
-    return result
-
-
-async def show_horse(user_id: str):
-    """
-    显示马的数据表
-    """
-    if await Horsedb.exists(user_id=user_id):
-        horse = await Horsedb.get(user_id=user_id)
-        data = horse.data
-        horse_nickname = horse.horse_nickname
-        horse_name = horse.horse_name
-        exp = horse.exp
-        sumx = data[0] + data[1] + data[2] + data[3]
-        result = f"{horse_nickname}\n{horse_name}\n"
-        result += f"Lv.{exp // exp_up_level}"
-        if exp // exp_up_level < level_max:
-            result += f"\nExp {exp % exp_up_level} / {exp_up_level}\n"
-        else:
-            result += f"  Max\n"
-        result += f"综合移速：{round((data[1]  + data[2] * 2 + data[3] * 3)/ sumx * 100) / 100}\n\n"
-        result += f"详细移速表：\n"
-        result += f" +0\t  {data[4]}\t   {round(data[0]/sumx*100,1)}%\n"
-        result += f" +1\t  {data[5]}\t   {round(data[1]/sumx*100,1)}%\n"
-        result += f" +2\t  {data[6]}\t   {round(data[2]/sumx*100,1)}%\n"
-        result += f" +3\t  {data[7]}\t   {round(data[3]/sumx*100,1)}%"
-        return await text_to_pic(text=result, width=180, device_scale_factor=2)
-    else:
-        return f"您还没有自己的马，请发送“获取赛马”获得您的第一匹马"
-
-
-async def rename_horse(user_id: str, name: str, nickname: str) -> str:
-    """
-    赛马重命名
-    """
-    if await Horsedb.exists(user_id=user_id):
-        if name == "":
-            result = f"马的名字在哪里呢\n请使用指令：\n赛马改名 [名字] [称号]\n称号必须为2个中文字符"
-        elif nickname == "":
-            result = f"马的昵称又在哪里呢\n请使用指令：\n赛马改名  [名字] [称号]\n称号必须为2个中文字符"
-        elif len(name) > name_max_len:
-            result = f"马的名字太长了啦，最大长度是{str(name_max_len)}个中文/英文字符哒"
-        elif len(nickname) != nickname_max_len or not is_chinese(nickname[:1]) or not is_chinese(nickname[1:]):
-            result = f"马的昵称必须是{str(nickname_max_len)}个中文字符哒"
-        else:
-            horse, _ = await Horsedb.get_or_create(
-                user_id=user_id, horse_name=name, horse_nickname=("『" + nickname + "』"))
-            result = f"赛马改名成功\n{horse.horse_nickname}{horse.horse_name} 又是个名字响亮的崽啦"
-    else:
-        result = f"您还没有自己的马，请发送“获取赛马”获得您的第一匹马"
-    return result
-
-
 async def random_rank() -> [int, str]:
     """
-    rank分级
+    随机属性波动值a，及rank
+    :return: [a, rank]
     """
     a = random.randint(0, 100)
     return await num_to_rank(a)
 
 
 async def num_to_rank(a) -> [int, str]:
+    """
+    根据属性波动值a计算rank
+    :return: [a, rank]
+    """
     if a >= 90:
         rank = "S"
     elif a >= 75:
@@ -172,6 +119,88 @@ async def horse_refresh_rate(horse: Horsedb):
     result += f" +3\t  {data[7]}\t  {data[3]}\n"
     result += f"综合移速{round((data[1]  + data[2] * 2 + data[3] * 3)/ sumx * 100) / 100}"
     return await text_to_pic(text=result, width=180, device_scale_factor=2)
+
+
+#============主函数==============================================================
+async def new_horse(user_id: str, name: str, nickname: str) -> str:
+    """
+    新用户获取一匹马
+    """
+    if await have_horse(user_id):
+        result = f"你已经有一匹马了\n请使用指令“我的赛马”查看详细"
+    elif name == "":
+        result = f"马的名字在哪里呢\n请使用指令：\n获取赛马 [名字] [称号]\n称号必须为2个中文字符"
+    elif nickname == "":
+        result = f"马的昵称又在哪里呢\n请使用指令：\n获取赛马 [名字] [称号]\n称号必须为2个中文字符"
+    elif len(name) > name_max_len:
+        result = f"马的名字太长了啦，最大长度是{str(name_max_len)}个中文/英文字符哒"
+    elif len(nickname) != nickname_max_len or not is_chinese(nickname[:1]) or not is_chinese(nickname[1:]):
+        result = f"马的昵称必须是{str(nickname_max_len)}个中文字符哒"
+    else:
+        horse, _ = await Horsedb.get_or_create(
+            user_id=user_id, horse_name=name, horse_nickname=(f"『{nickname}』"))
+        result = f"获取赛马娘成功\n{horse.horse_nickname}{horse.horse_name} 已经成为你的伙伴啦"
+    return result
+
+
+async def show_horse(user_id: str):
+    """
+    显示马的数据表
+    """
+    if await have_horse(user_id):
+        horse = await Horsedb.get(user_id=user_id)
+        data = horse.data
+        horse_nickname = horse.horse_nickname
+        horse_name = horse.horse_name
+        exp = horse.exp
+        sumx = data[0] + data[1] + data[2] + data[3]
+        result = f"{horse_nickname}\n{horse_name}\n"
+        result += f"Lv.{exp // exp_up_level}"
+        if exp // exp_up_level < level_max:
+            result += f"\nExp {exp % exp_up_level} / {exp_up_level}\n"
+        else:
+            result += f"  Max\n"
+        result += f"综合移速：{round((data[1]  + data[2] * 2 + data[3] * 3)/ sumx * 100) / 100}\n\n"
+        result += f"详细移速表：\n"
+        result += f" +0\t  {data[4]}\t   {round(data[0]/sumx*100,1)}%\n"
+        result += f" +1\t  {data[5]}\t   {round(data[1]/sumx*100,1)}%\n"
+        result += f" +2\t  {data[6]}\t   {round(data[2]/sumx*100,1)}%\n"
+        result += f" +3\t  {data[7]}\t   {round(data[3]/sumx*100,1)}%"
+        return await text_to_pic(text=result, width=180, device_scale_factor=2)
+    else:
+        return f"您还没有自己的马，请发送“获取赛马”获得您的第一匹马"
+
+
+async def rename_horse(user_id: str, name: str, nickname: str) -> str:
+    """
+    赛马重命名
+    """
+    if await have_horse(user_id):
+        if name == "":
+            result = f"马的名字在哪里呢\n请使用指令：\n赛马改名 [名字] [称号]\n称号必须为2个中文字符"
+        elif nickname == "":
+            result = f"马的昵称又在哪里呢\n请使用指令：\n赛马改名  [名字] [称号]\n称号必须为2个中文字符"
+        elif len(name) > name_max_len:
+            result = f"马的名字太长了啦，最大长度是{str(name_max_len)}个中文/英文字符哒"
+        elif len(nickname) != nickname_max_len or not is_chinese(nickname[:1]) or not is_chinese(nickname[1:]):
+            result = f"马的昵称必须是{str(nickname_max_len)}个中文字符哒"
+        else:
+            horse, _ = await Horsedb.get_or_create(
+                user_id=user_id, horse_name=name, horse_nickname=("『" + nickname + "』"))
+            result = f"赛马改名成功\n{horse.horse_nickname}{horse.horse_name} 又是个名字响亮的崽啦"
+    else:
+        result = f"您还没有自己的马，请发送“获取赛马”获得您的第一匹马"
+    return result
+
+async def refresh_horse(user_id):
+    if have_horse(user_id):
+        horse = await get_horse(user_id)
+        result = await horse_refresh_rate(horse)
+    else:
+        result = f"您还没有自己的马，请发送“获取赛马”获得您的第一匹马"
+    return result
+
+
 
 
 async def horse_getexp(user_id: str, exp: int):
