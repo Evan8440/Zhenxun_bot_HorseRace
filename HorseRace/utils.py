@@ -96,50 +96,57 @@ async def rename_horse(user_id: str, name: str, nickname: str) -> str:
     return result
 
 
-async def randomrank() -> [int, str]:
+async def random_rank() -> [int, str]:
     """
     rank分级
     """
-    a = random.randint(-100, 100)
-    if a >= 80:
-        rank = f"S"
-    elif a >= 50:
-        rank = f"A"
-    elif a >= 20:
-        rank = f"B"
-    elif a >= -20:
-        rank = f"C"
-    elif a >= -50:
-        rank = f"D"
-    elif a >= -80:
-        rank = f"E"
-    else:
-        rank = f"F"
-    return [a, rank]
+    a = random.randint(0, 100)
+    return await num_to_rank(a)
 
+
+async def num_to_rank(a) -> [int, str]:
+    if a >= 90:
+        rank = "S"
+    elif a >= 75:
+        rank = "A"
+    elif a >= 60:
+        rank = "B"
+    elif a >= 40:
+        rank = "C"
+    elif a >= 25:
+        rank = "D"
+    elif a >= 10:
+        rank = "E"
+    else:
+        rank = "F"
+    return [a, rank]
 
 async def horse_refresh_rate(horse: Horsedb):
     """
-    刷新属性，适用于马升级/吃道具
+    刷新属性，适用于手刷属性
     返回pic
     """
     level = horse.exp // exp_up_level
     pa = (1 + base_rate / 100)
     pb = (1 - base_rate / 100)
     x = 1 / (1 + math.exp(-level / level_max * 4)) - 0.5
-    rank = await randomrank()
+    rank = await random_rank()
+    num_0 = rank[0]
     rank_0 = rank[1]
-    rate_0 = round(rate_0_base - (rate_0_base * pa - rate_0_min * pb) * x * (100 + max_rate * rank[0]/100) / 100)
-    rank = await randomrank()
+    rate_0 = round(rate_0_base - (rate_0_base * pa - rate_0_min * pb) * x * (1 + max_rate * (rank[0] - 50)/5000))
+    rank = await random_rank()
+    num_1 = rank[0]
     rank_1 = rank[1]
-    rate_1 = round(rate_1_base - (rate_1_base * pa - rate_1_min * pb) * x * (100 + max_rate * rank[0]/100) / 100)
-    rank = await randomrank()
+    rate_1 = round(rate_1_base - (rate_1_base * pa - rate_1_min * pb) * x * (1 + max_rate * (rank[0] - 50)/5000))
+    rank = await random_rank()
+    num_2 = rank[0]
     rank_2 = rank[1]
-    rate_2 = round(rate_2_base + (rate_2_max * pa - rate_2_base * pb) * x * (100 + max_rate * rank[0]/100) / 100)
-    rank = await randomrank()
+    rate_2 = round(rate_2_base + (rate_2_max * pa - rate_2_base * pb) * x * (1 + max_rate * (rank[0] - 50)/5000))
+    rank = await random_rank()
+    num_3 = rank[0]
     rank_3 = rank[1]
-    rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (100 + max_rate * rank[0]/100) / 100)
-    data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3]
+    rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (1 + max_rate * (rank[0] - 50)/5000))
+    data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3, num_0, num_1, num_2, num_3]
     horse.data = data
     await horse.save()
     horse_nickname = horse.horse_nickname
@@ -153,13 +160,18 @@ async def horse_refresh_rate(horse: Horsedb):
     else:
         result += f"  Max\n\n"
     result += f"本次刷新能力值：\n"
-    result += f"移动|Rank|权重|概率占比\n"
-    result += f" +0\t  {data[4]}\t  {data[0]}\t   {round(data[0]/sumx*100, 1)}%\n"
-    result += f" +1\t  {data[5]}\t  {data[1]}\t   {round(data[1]/sumx*100, 1)}%\n"
-    result += f" +2\t  {data[6]}\t  {data[2]}\t   {round(data[2]/sumx*100, 1)}%\n"
-    result += f" +3\t  {data[7]}\t  {data[3]}\t   {round(data[3]/sumx*100, 1)}%\n"
+    # result += f"移动|Rank|权重|概率占比\n"
+    # result += f" +0\t  {data[4]}\t  {data[0]}\t   {round(data[0]/sumx*100, 1)}%\n"
+    # result += f" +1\t  {data[5]}\t  {data[1]}\t   {round(data[1]/sumx*100, 1)}%\n"
+    # result += f" +2\t  {data[6]}\t  {data[2]}\t   {round(data[2]/sumx*100, 1)}%\n"
+    # result += f" +3\t  {data[7]}\t  {data[3]}\t   {round(data[3]/sumx*100, 1)}%\n"
+    result += f"移动|Rank|权重\n"
+    result += f" +0\t  {data[4]}\t  {data[0]}\n"
+    result += f" +1\t  {data[5]}\t  {data[1]}\n"
+    result += f" +2\t  {data[6]}\t  {data[2]}\n"
+    result += f" +3\t  {data[7]}\t  {data[3]}\n"
     result += f"综合移速{round((data[1]  + data[2] * 2 + data[3] * 3)/ sumx * 100) / 100}"
-    return await text_to_pic(text=result, width=240, device_scale_factor=2)
+    return await text_to_pic(text=result, width=180, device_scale_factor=2)
 
 
 async def horse_getexp(user_id: str, exp: int):
@@ -168,10 +180,30 @@ async def horse_getexp(user_id: str, exp: int):
     """
     if await Horsedb.exists(user_id=user_id):
         horse = await get_horse(user_id)
+        level_0 = horse.exp // exp_up_level
         horse.exp += exp
         if horse.exp > level_max * exp_up_level:
             horse.exp = level_max * exp_up_level
         await horse.save()
+        level_1 = horse.exp // exp_up_level
+        if level_1 > level_0:
+            data = horse.data
+            pa = (1 + base_rate / 100)
+            pb = (1 - base_rate / 100)
+            x = 1 / (1 + math.exp(-level_1 / level_max * 4)) - 0.5
+            rank_0 = (await num_to_rank(data[8]))[1]
+            rate_0 = round(rate_0_base - (rate_0_base * pa - rate_0_min * pb) * x * (1 + max_rate * (data[8] - 50) / 5000))
+            rank_1 = (await num_to_rank(data[9]))[1]
+            rate_1 = round(rate_1_base - (rate_1_base * pa - rate_1_min * pb) * x * (1 + max_rate * (data[9] - 50) / 5000))
+            rank_2 = (await num_to_rank(data[10]))[1]
+            rate_2 = round(rate_2_base + (rate_2_max * pa - rate_2_base * pb) * x * (1 + max_rate * (data[10] - 50) / 5000))
+            rank_3 = (await num_to_rank(data[11]))[1]
+            rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (1 + max_rate * (data[11] - 50) / 5000))
+            horse.data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3, data[8], data[9], data[10], data[11]]
+            await horse.save()
+        else:
+            pass
+
 
 
 

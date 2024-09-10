@@ -17,7 +17,7 @@ class Horsedb(Model):
     exp = fields.IntField(default=0, description="经验")
     """总经验值"""
     data: Dict = fields.JSONField(
-        default=[rate_0_base, rate_1_base, rate_2_base, rate_3_base, f"C", f"C", f"C", f"C"])
+        default=[rate_0_base, rate_1_base, rate_2_base, rate_3_base, f"C", f"C", f"C", f"C", 50, 50, 50, 50])
     """马的基础三维"""
     create_time = fields.DatetimeField(auto_now_add=True, description="创建时间")
     """创建时间"""

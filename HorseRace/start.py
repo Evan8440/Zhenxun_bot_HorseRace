@@ -13,7 +13,7 @@ driver: Driver = nonebot.get_driver()
 
 @driver.on_startup
 async def events_read():
-    aa = [[1, "无声铃鹿", "『铃鹿』", round(level_max*0.25), 'D', 'A', 'S', 'B'],
+    aa = [[1, "无声铃鹿", "『铃鹿』", round(level_max*0.25), 'B', 'A', 'S', 'B'],
           [2, "富士奇石", "『富士』", round(level_max*0.4), 'A', 'B', 'S', 'A'],
           [3, "里见光钻", "『光钻』", round(level_max*0.5), 'B', 'D', 'B', 'A'],
           [4, "帝王光辉", "『光辉』", round(level_max*0.6), 'A', 'C', 'A', 'C'],
@@ -28,12 +28,11 @@ async def events_read():
         horse.horse_name = A[1]
         horse.horse_nickname = (A[2])
         horse.exp = A[3]
-        horse.data = await random_data(A)
+        horse.data = await pre_data(A)
         await horse.save()
 
 
-async def random_data(a):
-    pass
+async def pre_data(a):
     level = a[3]
     a0 = a[4]
     a1 = a[5]
@@ -42,19 +41,19 @@ async def random_data(a):
     pa = (1 + base_rate / 100)
     pb = (1 - base_rate / 100)
     x = 1 / (1 + math.exp(-level / level_max * 4)) - 0.5
-    rank = await rank_to_data(a0)
+    num_0 = await rank_to_data(a0)
     rank_0 = a0
-    rate_0 = round(rate_0_base - (rate_0_base * pa - rate_0_min * pb) * x * (100 + max_rate * rank / 100) / 100)
-    rank = await rank_to_data(a1)
+    rate_0 = round(rate_0_base - (rate_0_base * pa - rate_0_min * pb) * x * (100 + max_rate * num_0 / 100) / 100)
+    num_1 = await rank_to_data(a1)
     rank_1 = a1
-    rate_1 = round(rate_1_base - (rate_1_base * pa - rate_1_min * pb) * x * (100 + max_rate * rank / 100) / 100)
-    rank = await rank_to_data(a2)
+    rate_1 = round(rate_1_base - (rate_1_base * pa - rate_1_min * pb) * x * (100 + max_rate * num_1 / 100) / 100)
+    num_2 = await rank_to_data(a2)
     rank_2 = a2
-    rate_2 = round(rate_2_base + (rate_2_max * pa - rate_2_base * pb) * x * (100 + max_rate * rank / 100) / 100)
-    rank = await rank_to_data(a3)
+    rate_2 = round(rate_2_base + (rate_2_max * pa - rate_2_base * pb) * x * (100 + max_rate * num_2 / 100) / 100)
+    num_3 = await rank_to_data(a3)
     rank_3 = a3
-    rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (100 + max_rate * rank / 100) / 100)
-    data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3]
+    rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (100 + max_rate * num_3 / 100) / 100)
+    data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3, a[4], a[5], a[6], a[7]]
     return data
 
 
