@@ -1,59 +1,42 @@
 最新更新：
-2022.07.12： 延时函数time.sleep 换成 await asyncio.sleep
-            禁止同名马参赛，禁止"."开头或者结尾的马参赛（会导致位置显示混淆视听）
-            更改插件分类
+2024/9 重启赛马3.0计划
 
-2022.06.24：更正事件文件为utf-8格式，更正读取格式为utf-8
+go—cqhttp的疯狂风控把赛马2.0打的体无完肤以至于一度放弃计划。
 
-2022.06.24：修正了跨群赛马的问题
-
+所以说，napcat万岁！
 
 # Zhenxun_bot_HorseRace
 适配真寻的赛马小插件，支持自定义事件
 
-首先感谢[赫尔不是中二病](https://gitee.com/heerkaisair/horse-race-ami/)及其项目提供的帮助（哦，我的上帝这玩意怎么要.Net 4.8，还不是python的）
+首先感谢，『赫尔不是中二病』对本项目的支持：
+[gitee上的dll版本](https://gitee.com/heerkaisair/horse-race-ami/)
+ & [github上的http版本](https://github.com/Hippodamia/hippodamia-server)
 
-然后就写了这个赛马-青春版-真寻专用版  
-
-插件依赖 [nonebot-plugin-htmlrender](https://github.com/kexue-z/nonebot-plugin-htmlrender) 插件来渲染图片，使用前需要检查 playwright 相关的依赖是否正常安装；同时为确保字体正常渲染，需要系统中存在中文字体
+白嫖赛马事件真的快乐捏（理直气壮）
 
 ### 真寻bot的插件安装方式
 
-真寻安装是请将该插件下载并将nonebot_plugin_htmlrender与HorseRace放于同一插件目录
+1、将HorseRace放于真寻的/zhenxun/plugins/
 
-P.S.(nonebot_plugin_htmlrender_main里有个文件夹叫nonebot_plugin_htmlrender，别再问为啥依赖装了但是还是依赖报错了，天天都有人问这个问题)
+2、或者自行更改bot.py
 
-nonebot_plugin_htmlrender在真寻中缺失依赖为 markdown 和 Jinja2
-
-安装方式：以下指令请在poetry shell   # 进入虚拟环境后运行
-
-pip3 install markdown
-
-pip3 install Jinja2
+3、或者使用真寻的插件商店（未实装）
 
 
 ### 使用方式
 
-    第一位玩家发起活动，指令：赛马创建
-    加入赛马活动指令：赛马加入 [你的马儿名称]
-    开始指令：赛马开始
-    赛马超时重置指令：赛马重置
-
-    管理员指令：赛马暂停/赛马清空
-                    赛马事件重载
+    群内发送"真寻帮助赛马“获取使用帮助
 
 ### 自定义事件包方式      
 
-事件包为gbk编码（别问，问就是复制一个事件包然后清空再编辑）
+事件包为UTF-8编码（不会就复制一个已有事件包然后再编辑）
 
-详细信息请参考：
-
-事件添加相关.txt
-
-事件详细模板.txt
+详细配置信息信息请参考已有事件包以及v3.0.txt
 
 ### 给此项目 上传事件包
 进入events目录，将事件包内容整个复制进去后，确认并提交pr
+
+若有兴趣上传，就请确认检查无误后再进行上传，按以往的经验，天天都是中文符号或者其他格式错误。好歹给自己的真寻上面运行两回溜溜马吧？
 
 ![3~}A`0{P7%DCBC X2KV5~)B](https://user-images.githubusercontent.com/108109327/175483369-1fccb3d6-b82e-4299-9ecb-21aa576c4c17.png)
 
