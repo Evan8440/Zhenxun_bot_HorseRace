@@ -35,6 +35,7 @@ async def get_horse(user_id: str)-> Horsedb:
     :return: Horsedb，horse
     """
     if await have_horse(user_id):
+        # horse = await Horsedb.get(user_id=user_id)
         horse, _ = await Horsedb.get_or_create(user_id=user_id)
         return horse
 
@@ -70,8 +71,8 @@ async def num_to_rank(a) -> [int, str]:
 
 async def horse_refresh_rate(horse: Horsedb):
     """
-    刷新属性，适用于手刷属性
-    返回pic
+    :param horse: Horsedb，horse
+    :return: pic，刷新后的属性表
     """
     level = horse.exp // exp_up_level
     pa = (1 + base_rate / 100)
@@ -124,7 +125,10 @@ async def horse_refresh_rate(horse: Horsedb):
 #============主函数==============================================================
 async def new_horse(user_id: str, name: str, nickname: str) -> str:
     """
-    新用户获取一匹马
+    :param user_id: str，qq号
+    :param name: str，马的名字
+    :param nickname: str，马的称号
+    :return: str，文字反馈
     """
     if await have_horse(user_id):
         result = f"你已经有一匹马了\n请使用指令“我的赛马”查看详细"
@@ -145,10 +149,11 @@ async def new_horse(user_id: str, name: str, nickname: str) -> str:
 
 async def show_horse(user_id: str):
     """
-    显示马的数据表
+    :param user_id: str，qq号
+    :return: str，文字反馈
     """
     if await have_horse(user_id):
-        horse = await Horsedb.get(user_id=user_id)
+        horse = await get_horse(user_id)
         data = horse.data
         horse_nickname = horse.horse_nickname
         horse_name = horse.horse_name
@@ -173,7 +178,10 @@ async def show_horse(user_id: str):
 
 async def rename_horse(user_id: str, name: str, nickname: str) -> str:
     """
-    赛马重命名
+    :param user_id: str，qq号
+    :param name: str，马的名字
+    :param nickname: str，马的称号
+    :return: str，文字反馈
     """
     if await have_horse(user_id):
         if name == "":
@@ -193,6 +201,10 @@ async def rename_horse(user_id: str, name: str, nickname: str) -> str:
     return result
 
 async def refresh_horse(user_id):
+    """
+    :param user_id: str，qq号
+    :return: pic刷新数据表 | str文字反馈报错
+    """
     if have_horse(user_id):
         horse = await get_horse(user_id)
         result = await horse_refresh_rate(horse)
@@ -205,9 +217,11 @@ async def refresh_horse(user_id):
 
 async def horse_getexp(user_id: str, exp: int):
     """
-    马获得经验，不带升级判定
+    :param user_id: str，qq号
+    :param exp: int，经验值
+    :return: 无反馈
     """
-    if await Horsedb.exists(user_id=user_id):
+    if await have_horse(user_id):
         horse = await get_horse(user_id)
         level_0 = horse.exp // exp_up_level
         horse.exp += exp
@@ -230,8 +244,6 @@ async def horse_getexp(user_id: str, exp: int):
             rate_3 = round(rate_3_base + (rate_3_max * pa - rate_3_base * pb) * x * (1 + max_rate * (data[11] - 50) / 5000))
             horse.data = [rate_0, rate_1, rate_2, rate_3, rank_0, rank_1, rank_2, rank_3, data[8], data[9], data[10], data[11]]
             await horse.save()
-        else:
-            pass
 
 
 
