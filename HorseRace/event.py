@@ -1,7 +1,7 @@
 ﻿import random
 from nonebot_plugin_session import EventSession
 from zhenxun.utils.depends import UserName
-from .horseracedb import Horsedb, eventdb
+from .horseracedb import Horsedb, Eventdb
 from .setting import *
 import time
 from .horse import RaceHorse
@@ -18,8 +18,8 @@ class RaceEvent:
     """
     def __init__(self, event):
         self.id = id
-        # if eventdb.exists(id=id):
-        #     event, _ = eventdb.get_or_create(id=id)
+        # if Eventdb.exists(id=id):
+        #     event, _ = Eventdb.get_or_create(id=id)
         self.group = event.group
         self.uid = event.uid
         self.name = event.name

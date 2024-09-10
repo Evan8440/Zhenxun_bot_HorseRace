@@ -1,7 +1,7 @@
 ﻿import re
 import random
 import math
-from .horseracedb import Horsedb, eventdb
+from .horseracedb import Horsedb, Eventdb
 from .horserace import RaceGroup
 from .horse import RaceHorse
 from .event import RaceEvent
@@ -241,12 +241,12 @@ async def get_horse_class(user_id: str):
 #         pass
 
 
-async def get_event(user_id: str) -> eventdb:
+async def get_event(user_id: str) -> Eventdb:
     """
     获取数据库内event的信息，若无则无返回
     """
-    if await eventdb.exists(id=id):
-        event, _ = await eventdb.get_or_create(id=id)
+    if await Eventdb.exists(id=id):
+        event, _ = await Eventdb.get_or_create(id=id)
         return event
 
 

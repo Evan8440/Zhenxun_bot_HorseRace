@@ -105,21 +105,22 @@ _matcher.shortcut(
 )
 
 
-# _matcher_super = on_alconna(
-#     Alconna(
-#         "赛马",
-#         Subcommand("event-reload", help_text="赛马事件重载"),
-#     ),
-#     permission=SUPERUSER,
-#     priority=1,
-#     block=True,
-# )
-# _matcher_super.shortcut(
-#     "赛马事件重载",
-#     command="赛马",
-#     arguments=["event-reload"],
-#     prefix=True,
-# )
+_matcher_super = on_alconna(
+    Alconna(
+        "赛马",
+        Subcommand("event-del", help_text="赛马事件清空"),
+        Subcommand("event-reload", help_text="赛马事件重载"),
+    ),
+    permission=SUPERUSER,
+    priority=1,
+    block=True,
+)
+_matcher_super.shortcut(
+    "赛马事件重载",
+    command="赛马",
+    arguments=["event-reload"],
+    prefix=True,
+)
 
 
 # ================================以下为正式函数================================
@@ -146,9 +147,14 @@ async def _(session: EventSession, arparma: Arparma, name: str, nickname: str):
     await MessageUtils.build_message(result).send(at_sender=True)
 
 
-@_matcher.assign("event-reload")
+@_matcher_super.assign("event-del")
 async def _(session: EventSession, arparma: Arparma):
-    # await eventdb.filter().delete()
+    result = await load_dlcs()
+    await MessageUtils.build_message(result).send(at_sender=True)
+
+@_matcher_super.assign("event-reload")
+async def _(session: EventSession, arparma: Arparma):
+    await Eventdb.filter().delete()
     result = await load_dlcs()
     await MessageUtils.build_message(result).send(at_sender=True)
 

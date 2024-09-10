@@ -2,7 +2,7 @@ from .setting import *
 import math
 import nonebot
 from nonebot.drivers import Driver
-from .horseracedb import Horsedb, eventdb
+from .horseracedb import Horsedb, Eventdb
 from zhenxun.services.log import logger
 import json
 import os
@@ -123,18 +123,18 @@ async def deal_events(events) -> str:
                     sub = "horse"
                 targets = event["targets"]
                 data = event["events"]
-                if await eventdb.exists(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                if await Eventdb.exists(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
                                         data=data, rare=rare, uniqueness=uniqueness, sub=sub):
                     # logs += f"id：{str(uid)}已存在，跳过\n"
                     pass
-                elif await eventdb.exists(group=group, uid=uid[0]):
+                elif await Eventdb.exists(group=group, uid=uid[0]):
                     # logs += f"id：{str(uid)}已存在，检测非重复，开始覆盖\n"
-                    await eventdb.filter(group=group, uid=uid[0]).delete()
-                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                    await Eventdb.filter(group=group, uid=uid[0]).delete()
+                    await Eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
                                                 data=data, rare=rare, uniqueness=uniqueness, sub=sub)
                     logs += f"Warning: id：{str(uid)}的事件加载时更新并覆盖数据，若重复此报错则为包内id重复\n"
                 else:
-                    await eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
+                    await Eventdb.get_or_create(group=group, uid=uid[0], name=uid[1], targets=targets,describe=describe,
                                                 data=data, rare=rare, uniqueness=uniqueness, sub=sub)
             except:
                 logs += f"Warning: 事件uid:{str(uid[0])}，事件名{str(uid[1])}\n"

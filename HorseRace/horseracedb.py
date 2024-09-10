@@ -27,7 +27,7 @@ class Horsedb(Model):
         table_description = "赛马插件-马库"
 
 
-class eventdb(Model):
+class Eventdb(Model):
 
     id = fields.IntField(pk=True, generated=True, auto_increment=True)
     """自增id"""
